@@ -48,3 +48,20 @@
     * `Ex:` a cluster of kafka/db's/apps
 * `Sample` : A sample is a single value at a point in time in a time series.
     * `Ex:` http_requests_total{method='POST'} -> 45
+
+### Prometheus Architecture
+
+![prometheus_arch](images/prometheus_arch.jpg)
+
+* Prometheus Server has 3 components
+1. `Retrieval`
+    * Will find targets from `Service Discovery`
+    * And then Will Pull metrics from the targets, 
+    * if pull is not supported on targets then 
+      * the targets will push metrics to `PushGateway`
+      * then Retrieval will pull from `PushGateway`
+2. `Storage`
+   * Will Store the pull metrics on internal storage node it may be HDD/SDD
+3. `Http Server / PromQL`
+   * Will Helpful to provide metrics to the required platfroms (Web UI, Grafan, API Clients etc..)
+   * Push alerts to AlertManager
