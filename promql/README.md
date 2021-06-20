@@ -149,6 +149,8 @@
             <vector expr> <bin-op> ignoring(<label list>) <vector expr>
             <vector expr> <bin-op> on(<label list>) <vector expr>
         ```
+        ![on](images/logical_operators/on.png)
+
     - `many-to-one/one-to-many`:
         * `Many-to-one and one-to-many vector matches` refer to the case where each vector element on the "one"-side can match with multiple elements on the "many"-side.
         *  This has to be explicitly requested using the `group_left or group_right` modifier, where left/right determines which vector has the higher cardinality.
@@ -162,3 +164,26 @@
         * Grouping modifiers can only be used for comparison and arithmetic. Operations as `and, unless and or` operations match with all possible entries in the right vector by default.
 
 ##### Aggregation Operators
+* Prometheus supports the following built-in aggregation operators that can be used to aggregate the elements of a single instant vector, resulting in a new vector of fewer elements with aggregated values:
+  - sum (calculate sum over dimensions)
+  - min (select minimum over dimensions)
+  - max (select maximum over dimensions)
+  - avg (calculate the average over dimensions)
+  - group (all values in the resulting vector are 1)
+  - stddev (calculate population standard deviation over dimensions)
+  - stdvar (calculate population standard variance over dimensions)
+  - count (count number of elements in the vector)
+  - count_values (count number of elements with the same value)
+  - bottomk (smallest k elements by sample value)
+  - topk (largest k elements by sample value)
+  - quantile (calculate φ-quantile (0 ≤ φ ≤ 1) over dimensions)
+* These operators can either be used to aggregate over all label dimensions or preserve distinct dimensions by including a without or by clause. These clauses may be used before or after the expression.
+```
+  <aggr-op> [without|by (<label list>)] ([parameter,] <vector expression>)
+  or
+  <aggr-op>([parameter,] <vector expression>) [without|by (<label list>)]
+```
+
+* For More Info On Aggregation : https://prometheus.io/docs/prometheus/latest/querying/operators/
+* Information on Functions : https://prometheus.io/docs/prometheus/latest/querying/functions/
+* Information on HTTP API : https://prometheus.io/docs/prometheus/latest/querying/api/
